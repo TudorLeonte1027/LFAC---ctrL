@@ -15,7 +15,7 @@ int errorCount = 0;
 }
 %left '+' '-'
 %left '*' '/' '%'
-%token  BGIN ASSIGN NR CLASS FUNCTION RETURN WHILE IF ELSE FOR ENDWHILE THEN ENDFOR TRUE FALSE ENDIF NEW LEQ EQ GEQ NE
+%token  BGIN ASSIGN NR FLOAT CLASS FUNCTION RETURN WHILE IF ELSE FOR ENDWHILE THEN ENDFOR TRUE FALSE ENDIF PRINT TYPEOF NEW LEQ EQ GEQ NE
 %token<string> VAR TYPE PRIVACY
 %start progr
 %%
@@ -49,6 +49,7 @@ e : e '+' e
   | '(' e ')' 
   | NR
   | VAR 
+  | FLOAT
   ;
 
 condition : e '<' e
@@ -92,6 +93,9 @@ statement:  VAR ASSIGN e //atribuire
          | VAR '.' VAR '('array_list')' //apelare metoda cu parametri
          | VAR '.' VAR '('')' //apelare metoda fara parametri
          | decl //declaratii in blockuri
+         | PRINT '(' e ')'
+         | TYPEOF '(' e ')'
+         | TYPEOF  '(' condition ')'
          ;
 
 array_list : e
