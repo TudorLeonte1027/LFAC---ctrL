@@ -20,6 +20,8 @@
 "new" { return NEW; }
 "function"   { return FUNCTION; }
 "return" { return RETURN; }
+"print" { return PRINT; }
+"typeof" { return TYPEOF; }
 "public"|"private" {yylval.string = strdup(yytext);return PRIVACY;}
 [a-zA-Z][a-zA-Z0-9_]* {yylval.string = strdup(yytext); return VAR;}  
 ":=" {return ASSIGN;}
@@ -27,7 +29,8 @@
 "!=" {return NE;}
 "<=" {return LEQ;}
 ">=" {return GEQ;}
-[0-9]+ {return NR;}
+[1-9][0-9]*|[0-9] {return NR;}
+[0-9]+\.[0-9]+ { return FLOAT;}
 [ \t] ;
 \n {yylineno++;}
 . {return yytext[0];}
