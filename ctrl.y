@@ -40,7 +40,7 @@ decl       :  TYPE VAR ';' {
               | TYPE VAR  '('')' ';'
               | TYPE VAR  '[' NR ']' ';'
            ;
-
+ 
 e : e '+' e  
   | e '*' e   
   | e '-' e    
@@ -74,6 +74,8 @@ main : BGIN '{' list '}'
 
 list :  statement ';'
      | list statement ';'    
+     | list decl
+     | decl
      ;
 
 statement:  VAR ASSIGN e //atribuire
@@ -89,6 +91,7 @@ statement:  VAR ASSIGN e //atribuire
          | VAR '.' VAR ASSIGN e //apelare camp
          | VAR '.' VAR '('array_list')' //apelare metoda cu parametri
          | VAR '.' VAR '('')' //apelare metoda fara parametri
+         | decl //declaratii in blockuri
          ;
 
 array_list : e
@@ -118,16 +121,10 @@ functions : func_def
           | functions func_def
           ;
 
-func_def : FUNCTION TYPE VAR '(' list_param ')' '{' func_member RETURN e ';' '}' 
-         | FUNCTION TYPE VAR '('')' '{' func_member RETURN e ';' '}' 
-         | FUNCTION TYPE VAR '(' list_param ',' function_in_function')' '{' func_member RETURN e ';' '}' 
+func_def : FUNCTION TYPE VAR '(' list_param ')' '{' list RETURN e ';' '}' 
+         | FUNCTION TYPE VAR '('')' '{' list RETURN e ';' '}' 
+         | FUNCTION TYPE VAR '(' list_param ',' function_in_function')' '{'  list RETURN e ';' '}' 
          ;
-
-func_member : statement ';' 
-              | TYPE VAR ';'         
-              | func_member statement ';'  
-              | func_member TYPE VAR ';'  
-              ;
 
 function_in_function : FUNCTION VAR '(' list_param ')'
                     | FUNCTION VAR '('')'
