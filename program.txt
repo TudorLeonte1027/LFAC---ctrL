@@ -53,6 +53,8 @@ if(i < 5) then
     x := 3  ;
 endif;
 
+int a;
+
 if(numar1 < 5) then
     if(numar2 < 5) then
         x:=3;
