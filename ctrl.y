@@ -132,7 +132,7 @@ class_member : TYPE VAR ';'  //declaratii
               ;
 
 functions : FUNCTION TYPE VAR '(' list_param ')' '{' function_list RETURN e ';' '}' 
-         | FUNCTION TYPE VAR '('')' '{' list RETURN e ';' '}' 
+         | FUNCTION TYPE VAR '('')' '{' function_list RETURN e ';' '}' 
          | FUNCTION TYPE VAR '(' list_param ',' function_in_function')' '{'  function_list RETURN e ';' '}' 
          ;
 
