@@ -19,14 +19,23 @@ int errorCount = 0;
 %token<string> VAR TYPE PRIVACY
 %start progr
 %%
-progr : declarations classes functions main { 
+progr : declarations main { 
             if (errorCount == 0) cout << "The program is correct!" << endl; 
         }
       ;
 
-declarations : decl           
-          |  declarations decl    
-          ;
+declarations : declaration_list
+             ;
+
+declaration_list : /* epsilon */
+                 | declaration_list declaration
+                 ;
+
+declaration : decl
+            | functions
+            | classes
+            ;
+
 
 decl       :  TYPE VAR ';' { 
                               if(!current->existsId($2)) {
@@ -79,6 +88,11 @@ list :  statement ';'
      | decl
      ;
 
+function_list : /* epsilon */ //pentru functii care au doar return
+              | function_list statement ';'
+              | function_list decl
+
+              ;
 statement:  VAR ASSIGN e //atribuire
          | VAR '(' array_list')' //apelare functie
          | VAR '('')' //apelare functie fara parametri
@@ -102,32 +116,24 @@ array_list : e
            | array_list ',' e
            ;
 
-classes : class_def
-        | classes class_def
-        ;
-
-class_def : CLASS VAR '{' class_members '}'  
+classes : CLASS VAR '{' class_members '}'  
           ;
 
 class_members : class_member
               | class_members class_member
               ;
 
-class_member : TYPE VAR ';'             
-              | TYPE VAR '(' list_param ')' ';' 
-              | TYPE VAR '(' ')' ';' 
-              | VAR '(' TYPE VAR ')' ';'
-              | '#' VAR '('')'';'
+class_member : TYPE VAR ';'  //declaratii           
+              | TYPE VAR '(' list_param ')' '{' function_list RETURN e ';' '}' //metode
+              | TYPE VAR '('')' '{' function_list RETURN e ';' '}' //metode fara parametri 
+              | VAR '(' TYPE VAR ')' ';' //constructor
+              | '#' VAR '('')'';' //destructor
               | PRIVACY':'
               ;
 
-functions : func_def     
-          | functions func_def
-          ;
-
-func_def : FUNCTION TYPE VAR '(' list_param ')' '{' list RETURN e ';' '}' 
+functions : FUNCTION TYPE VAR '(' list_param ')' '{' function_list RETURN e ';' '}' 
          | FUNCTION TYPE VAR '('')' '{' list RETURN e ';' '}' 
-         | FUNCTION TYPE VAR '(' list_param ',' function_in_function')' '{'  list RETURN e ';' '}' 
+         | FUNCTION TYPE VAR '(' list_param ',' function_in_function')' '{'  function_list RETURN e ';' '}' 
          ;
 
 function_in_function : FUNCTION VAR '(' list_param ')'
