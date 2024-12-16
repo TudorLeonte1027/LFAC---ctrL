@@ -131,7 +131,7 @@ class_members : class_member
 
 class_member : TYPE VAR ';'  //declaratii           
               | TYPE VAR '(' list_param ')' '{' function_list RETURN ret ';' '}' //metode
-              | TYPE VAR '('')' '{' function_list RETURN ret ';' '}' //metode fara parametri 
+              | TYPE VAR '('')' '{' function_list RETURN ret ';' '}' //metode fara parametri
               | VAR '(' TYPE VAR ')' ';' //constructor
               | '#' VAR '('')'';' //destructor
               | PRIVACY':'
