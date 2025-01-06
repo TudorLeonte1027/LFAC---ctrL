@@ -127,12 +127,12 @@ void SymbolTable::printVars()
 
     fout << endl;
     fout << "Classes:" << endl;
-    fout << "LineNo\tObjectName" << endl;
+    fout << "LineNo\tClassName" << endl;
 
     auto it4 = objects.begin();
     while (it4 != objects.end())
     {
-        Object* obj = it4->second;
+        Class* obj = it4->second;
         fout << obj->getLine() << "\t" << obj->getName() << endl;
         ++it4;
     }
@@ -167,17 +167,17 @@ Function* SymbolTable::setCurrentFunction(Function* f)
     return saveFn;
 }
 
-Object* SymbolTable::getObject(string name)
+Class* SymbolTable::getClass(string name)
 {
     return objects[name];
 }
 
-Object* SymbolTable::addObject(string name, int lineno)
+Class* SymbolTable::addClass(string name, int lineno)
 {
-    Object* o = objects[name];
+    Class* o = objects[name];
     if (o == nullptr)
     {
-        objects[name] = new Object(name, lineno);
+        objects[name] = new Class(name, lineno);
     }
     else
     {
