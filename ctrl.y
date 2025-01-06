@@ -106,7 +106,7 @@ user_data_types : user_data_type user_data_types
                 ;
 
 user_data_type : OBJECT_DEF ID '{' members '}' {
-     SymbolTable::getInstance()->addObject($2, yylineno);
+     SymbolTable::getInstance()->addClass($2, yylineno);
 }
                ;
 
