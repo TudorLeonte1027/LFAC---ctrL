@@ -70,13 +70,14 @@ public:
     void setReturnValue(Value* v);
 };
 
-class Object{
+class Class
+{
 private:
     string name;
     int lineno;
 public:
     int getLine() {return lineno;}
-    Object(string name, int lineno): name(name), lineno(lineno) {}
+    Class(string name, int lineno): name(name), lineno(lineno) {}
     string getName() {return name;}
 };
 
@@ -85,7 +86,7 @@ class SymbolTable
 private:
     map<string, Variable*> vars;
     map<string, Function*> funcs;
-    map<string, Object*> objects;
+    map<string, Class*> objects;
     static SymbolTable* instance;
     Function* crtFunction = nullptr;
     SymbolTable();
@@ -98,8 +99,8 @@ public:
     Variable* addVariable(const char* type, const char* name, const char* scope, int lineno);
     Function* getFunction(string name);
     Function* addFunction(const char* type, const char* name, list<Parameter*>* param, list<Statement*>* stmts, int lineno);
-    Object* getObject(string name);
-    Object* addObject(string name, int lineno);
+    Class* getClass(string name);
+    Class* addClass(string name, int lineno);
 
     Function* setCurrentFunction(Function* f);
     void setReturnValue(Value* v);
