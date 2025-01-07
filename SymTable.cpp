@@ -1,6 +1,7 @@
 
 #include <fstream>
 #include "SymbolTable.h"
+#include <vector>
 
 
 Variable::Variable(string type, string name, string scope, int lineno): type(type), name(name), scope(scope), lineno(lineno)
@@ -83,9 +84,8 @@ Variable* SymbolTable::getVariable(string name)
 void SymbolTable::printVars()
 {
     ofstream fout("Variables.txt");
-
+    vector<string> variables;
     fout << "Variables:"<< endl;
-    fout << "LineNo\tType\tVarName\tValue\tScope"<< endl;
     auto it = vars.begin();
     while (it != vars.end())
     {
@@ -95,20 +95,18 @@ void SymbolTable::printVars()
         {
             stringValue = var->getValue()->stringValue();
         }
-        char is_const = var->isConstant()?'*':' ' ;
-        fout<< var->getLine() <<"\t" << var->getType() <<is_const << "\t" << var->getName() << "\t" << stringValue << "\t" << var->getScope() << endl;
+        fout<< "LineNumber: "<<var->getLine() <<"  Type:" << var->getType() <<"  Name:" << var->getName() << "  Value:" << stringValue << "  Scope:" << var->getScope() << endl;
         ++it;
     }
 
     fout << endl;
     fout << "Functions:" << endl;
-    fout << "LineNo\tType\tFnName\tParameterTypes"<< endl;
 
     auto it3 = funcs.begin();
     while (it3 != funcs.end())
     {
         Function* var = it3->second;
-        fout << var->getLine() <<"\t" << var->getType() << "\t" << var->getName() << "\t(";
+        fout << "LineNumber:"<<var->getLine() <<"  Type:" << var->getType() << "  Name:" << var->getName() <<"  ParamTypes(";
         list<Parameter*>* params = var->getParameters();
         
         auto it2 = params->begin();
@@ -127,13 +125,12 @@ void SymbolTable::printVars()
 
     fout << endl;
     fout << "Classes:" << endl;
-    fout << "LineNo\tClassName" << endl;
 
     auto it4 = objects.begin();
     while (it4 != objects.end())
     {
         Class* obj = it4->second;
-        fout << obj->getLine() << "\t" << obj->getName() << endl;
+        fout << "LineNumber:"<<obj->getLine() << "  ClassName:" << obj->getName() << endl;
         ++it4;
     }
     fout.close();
